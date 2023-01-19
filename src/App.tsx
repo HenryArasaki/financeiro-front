@@ -1,10 +1,11 @@
-import SignUp from "./pages/SignUp"
+import Routes from './routes';
+
 
 function App() {
 
 
   return (<div className="h-screen bg-green-100">
-    <SignUp/>
+      <Routes/>
     </div>)
 }
 
