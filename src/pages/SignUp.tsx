@@ -1,4 +1,5 @@
-import { Formik, Field, Form, FormikHelpers } from "formik";
+import { Formik, Field, Form } from "formik";
+import api from "../services/api";
 
 interface Values {
   name: string;
@@ -21,14 +22,21 @@ export default function SignUp() {
       <div className="flex items-center justify-center mt-20">
         <Formik
           initialValues={initialValues}
-          onSubmit={(
-            values: Values,
-            { setSubmitting }: FormikHelpers<Values>
-          ) => {
-            setTimeout(() => {
-              alert(JSON.stringify(values, null, 2));
-              setSubmitting(false);
-            }, 500);
+          onSubmit={(values: Values) => {
+            if (values.password != values.confirmPassword) {
+              throw "Senhas devem ser iguais";
+            }
+
+            api
+              .post("/users", {
+                id: Math.floor(Math.random() * 101),
+                login: values.email,
+                senha: values.password,
+              })
+              .then((response) => console.log(response))
+              .catch((err) => {
+                console.error("ops! ocorreu um erro" + err);
+              });
           }}
         >
           <Form className="flex flex-col w-60 h-fit bg-green-500 p-10 rounded-lg text-white">
